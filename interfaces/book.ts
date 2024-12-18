@@ -12,12 +12,14 @@ export interface IBook {
     ISBN: string;
     cover_image: string;
     thumbnail: string[];
+    short_description: string;
     description: string;
     is_sale: number;
     price: string;
     discount: string;
     pages: number;
     weight: number;
+    height: number;
     dimension_length: number;
     dimension_width: number;
     deleted_at: string | null;

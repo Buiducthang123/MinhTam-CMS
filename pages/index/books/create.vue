@@ -34,7 +34,8 @@
                   <a-menu>
                     <a-menu-item @click="moveLeft(index)" :disabled="index === 0">← Di chuyển sang trái</a-menu-item>
                     <a-menu-item @click="moveRight(index)"
-                      :disabled="!formCreate.thumbnail || index === formCreate.thumbnail.length - 1">→ Di chuyển sang phải</a-menu-item>
+                      :disabled="!formCreate.thumbnail || index === formCreate.thumbnail.length - 1">→ Di chuyển sang
+                      phải</a-menu-item>
                     <a-menu-item @click="viewImage(item)">Xem</a-menu-item>
                     <a-menu-item @click="removeImage(index)" danger>Xóa</a-menu-item>
                   </a-menu>
@@ -105,15 +106,26 @@
         </a-form-item>
       </div>
 
-      <a-form-item label="Trọng lượng (kg)" name="weight" required>
-        <a-input-number v-model:value="formCreate.weight" class="w-full" min="0" step="0.01" />
-      </a-form-item>
+      <div class="flex gap-4">
+        <a-form-item label="Trọng lượng (kg)" name="weight" required>
+          <a-input-number v-model:value="formCreate.weight" class="w-full" min="0" step="0.01"
+            placeholder="Trọng lượng" />
+        </a-form-item>
+
+        <a-form-item label="Độ dày (cm)" name="height" required>
+          <a-input-number v-model:value="formCreate.height" class="w-full" min="0" step="0.01" placeholder="Độ dày" />
+        </a-form-item>
+      </div>
 
       <a-form-item label="Trạng thái bán" name="is_sale" required>
         <a-select v-model:value="formCreate.is_sale" placeholder="Chọn trạng thái">
           <a-select-option :value="1">Đang bán</a-select-option>
           <a-select-option :value="0">Ngừng bán</a-select-option>
         </a-select>
+      </a-form-item>
+
+      <a-form-item label="Mô tả ngắn" name="short_description" required>
+        <CkEditor v-model="formCreate.short_description" />
       </a-form-item>
 
       <a-form-item label="Mô tả" name="description" required>
@@ -183,7 +195,9 @@ const formCreate = reactive({
   dimension_length: undefined,
   dimension_width: undefined,
   weight: undefined,
+  height: undefined,
   is_sale: undefined,
+  short_description: '',
   description: '',
 });
 
@@ -207,8 +221,10 @@ const rules: Record<string, Rule[]> = {
   dimension_length: [{ required: true, message: 'Vui lòng nhập chiều dài', trigger: 'blur' }],
   dimension_width: [{ required: true, message: 'Vui lòng nhập chiều rộng', trigger: 'blur' }],
   weight: [{ required: true, message: 'Vui lòng nhập trọng lượng', trigger: 'blur' }],
+  height: [{ required: true, message: 'Vui lòng nhập độ dày', trigger: 'blur' }],
   is_sale: [{ required: true, message: 'Vui lòng chọn trạng thái bán', trigger: 'change' }],
   description: [{ required: true, message: 'Vui lòng nhập mô tả', trigger: 'blur' }],
+  short_description: [{ required: true, message: 'Vui lòng nhập mô tả ngắn', trigger: 'blur' }]
 };
 
 const handleCreate = async () => {
@@ -219,9 +235,15 @@ const handleCreate = async () => {
     headers: {
       Authorization: `Bearer ${accessToken.value}`
     },
-    body: formCreate
+    body: formCreate,
+    onResponse: ({ response }) => {
+      if (response.ok) {
+        message.success('Thêm mới sách thành công');
+        router.push('/books');
+      }
+      message.error(response._data.message || 'Có lỗi xảy ra vui lòng thử lại');
+    }
   });
-  router.push('/books');
 };
 
 const handleUploadCoverImage = (url: string) => {

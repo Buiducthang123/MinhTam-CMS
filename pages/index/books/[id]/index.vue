@@ -20,18 +20,23 @@
                     <p><span class="font-semibold">Kích thước:</span> {{ book.dimension_length }} x {{
                         book.dimension_width
                         }} cm</p>
+                    <p><span class="font-semibold">Độ dày:</span> {{ book?.height }} cm</p>
                     <p><span class="font-semibold">Trọng lượng:</span> {{ book.weight }} kg</p>
                     <p><span class="font-semibold">Trạng thái:</span> <a-tag :color="book.is_sale ? 'green' : 'red'">{{
                         book.is_sale ? 'Đang bán' : 'Ngừng bán' }}</a-tag></p>
-                    <p><span class="font-semibold">Mô tả:</span></p>
-                    <div v-html="book?.description" class="prose"></div>
                 </div>
             </div>
+            <div class="mt-10">
+                <p><span class="font-semibold">Mô tả ngắn:</span></p>
+                <div v-html="book?.short_description" class="prose"></div>
+                <p><span class="font-semibold">Mô tả:</span></p>
+                <div v-html="book?.description" class="prose"></div>
+            </div>
 
-            <div class="mt-6">
+            <div class="mt-6" v-if="book.thumbnail && book.thumbnail?.length > 0">
                 <h4 class="font-semibold text-xl mb-4">Ảnh minh họa thêm</h4>
                 <ul class="grid grid-cols-12 gap-4">
-                    <li v-for="(item, index) in book.thumbnail" :key="index" class="col-span-3" >
+                    <li v-for="(item, index) in book.thumbnail" :key="index" class="col-span-3">
                         <a-image :src="item" alt="Thumbnail" class="w-32 h-32 rounded-lg shadow-md" />
                     </li>
                 </ul>
@@ -55,7 +60,7 @@
                 <h4 class="font-semibold text-xl mb-4">Nhà xuất bản</h4>
                 <div class="flex gap-10">
                     <a-image class="max-w-80" :src="book.publisher?.avatar" />
-                   <div>
+                    <div>
                         <p class="font-medium">{{ book.publisher?.name }}</p>
                         <p class="text-sm text-gray-600">{{ book.publisher?.description }}</p>
                     </div>

@@ -25,7 +25,8 @@
             <a-form-item label="Ảnh minh họa thêm" name="thumbnail" required>
                 <ul class="flex gap-4 mb-4">
                     <li v-for="(item, index) in formUpdate.thumbnail" :key="index" class=" relative">
-                        <NuxtImg :src="item" alt="Thumbnail" class="rounded-lg shadow-md w-56 max-w-56 h-56 object-cover" />
+                        <NuxtImg :src="item" alt="Thumbnail"
+                            class="rounded-lg shadow-md w-56 max-w-56 h-56 object-cover" />
                         <div class="absolute top-2 right-2 flex gap-2">
                             <a-dropdown>
                                 <a class="ant-dropdown-link" @click="e => e.preventDefault()">
@@ -33,9 +34,11 @@
                                 </a>
                                 <template #overlay>
                                     <a-menu>
-                                        <a-menu-item @click="moveLeft(index)" :disabled="index === 0">← Di chuyển sang trái</a-menu-item>
+                                        <a-menu-item @click="moveLeft(index)" :disabled="index === 0">← Di chuyển sang
+                                            trái</a-menu-item>
                                         <a-menu-item @click="moveRight(index)"
-                                            :disabled="!formUpdate.thumbnail || index === formUpdate.thumbnail.length - 1">→ Di chuyển sang phải</a-menu-item>
+                                            :disabled="!formUpdate.thumbnail || index === formUpdate.thumbnail.length - 1">→
+                                            Di chuyển sang phải</a-menu-item>
                                         <a-menu-item @click="viewImage(item)">Xem</a-menu-item>
                                         <a-menu-item @click="removeImage(index)" danger>Xóa</a-menu-item>
                                     </a-menu>
@@ -106,15 +109,27 @@
                 </a-form-item>
             </div>
 
-            <a-form-item label="Trọng lượng (kg)" name="weight" required>
-                <a-input-number v-model:value="formUpdate.weight" class="w-full" min="0" step="0.01" />
-            </a-form-item>
+            <div class="flex gap-4">
+                <a-form-item label="Trọng lượng (kg)" name="weight" required>
+                    <a-input-number v-model:value="formUpdate.weight" class="w-full" min="0" step="0.01"
+                        placeholder="Trọng lượng" />
+                </a-form-item>
+
+                <a-form-item label="Độ dày (cm)" name="height" required>
+                    <a-input-number v-model:value="formUpdate.height" class="w-full" min="0" step="0.01"
+                        placeholder="Độ dày" />
+                </a-form-item>
+            </div>
 
             <a-form-item label="Trạng thái bán" name="is_sale" required>
                 <a-select v-model:value="formUpdate.is_sale" placeholder="Chọn trạng thái">
                     <a-select-option :value="1">Đang bán</a-select-option>
                     <a-select-option :value="0">Ngừng bán</a-select-option>
                 </a-select>
+            </a-form-item>
+
+            <a-form-item label="Mô tả ngắn" name="short_description" required>
+                <CkEditor v-model="formUpdate.short_description" />
             </a-form-item>
 
             <a-form-item label="Mô tả" name="description" required>
@@ -198,6 +213,8 @@ const formUpdate = reactive({
     dimension_length: book.value?.dimension_length,
     dimension_width: book.value?.dimension_width,
     weight: book.value?.weight,
+    height: book.value?.height,
+    short_description: book.value?.short_description,
     is_sale: book.value?.is_sale,
     description: book.value?.description,
 });
