@@ -37,12 +37,12 @@
 
                     <a-form-item label="Ngày bắt đầu" required name="start_date">
                         <a-date-picker show-time v-model:value="formEdit.start_date" style="width: 100%"
-                            format="DD/MM/YYYY HH:mm" value-format="DD/MM/YYYY HH:mm" />
+                            format="DD/MM/YYYY HH:mm" value-format="YYYY-MM-DDTHH:mm:ss.SSS[Z]" />
                     </a-form-item>
 
                     <a-form-item label="Ngày kết thúc" required name="end_date">
                         <a-date-picker show-time v-model:value="formEdit.end_date" style="width: 100%"
-                            format="DD/MM/YYYY HH:mm" value-format="DD/MM/YYYY HH:mm" />
+                            format="DD/MM/YYYY HH:mm" value-format="YYYY-MM-DDTHH:mm:ss.SSS[Z]" />
                     </a-form-item>
 
                     <a-form-item>
@@ -149,8 +149,8 @@ const formEdit = reactive<IFormEdit>({
     image: promotion.value?.image ?? '',
     description: promotion.value?.description,
     discount: promotion.value?.discount ?? 0,
-    start_date: promotion.value?.start_date ? dayjs(promotion.value?.start_date).tz('Asia/Ho_Chi_Minh').locale('vi').format('DD/MM/YYYY HH:mm') : '',
-    end_date: promotion.value?.end_date ? dayjs(promotion.value?.end_date).tz('Asia/Ho_Chi_Minh').locale('vi').format('DD/MM/YYYY HH:mm') : '',
+    start_date: promotion.value?.start_date ? dayjs(promotion.value?.start_date).tz('Asia/Ho_Chi_Minh').locale('vi').format('YYYY-MM-DDTHH:mm:ss.SSS[Z]') : '',
+    end_date: promotion.value?.end_date ? dayjs(promotion.value?.end_date).tz('Asia/Ho_Chi_Minh').locale('vi').format('YYYY-MM-DDTHH:mm:ss.SSS[Z]') : '',
     items: promotion.value?.books?.map(item => item.id) || []
 });
 

@@ -7,7 +7,7 @@ export interface IOrderItem{
     book?:IBook;
     quantity: number;
     price: number;
-    discount_amount: number;
+    discount: number;
     created_at?: Date;
     updated_at?: Date;
 }
