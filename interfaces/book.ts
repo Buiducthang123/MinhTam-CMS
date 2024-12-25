@@ -15,7 +15,7 @@ export interface IBook {
     short_description: string;
     description: string;
     is_sale: number;
-    price: string;
+    price: number;
     discount: string;
     pages: number;
     weight: number;

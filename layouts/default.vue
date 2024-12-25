@@ -35,7 +35,7 @@
 <script setup lang="ts">
 import { reactive, ref, watch, onMounted, h } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { MailOutlined, AppstoreOutlined, SettingOutlined, UserOutlined, HomeOutlined, BookOutlined } from '@ant-design/icons-vue';
+import { MailOutlined, AppstoreOutlined, SettingOutlined, UserOutlined, HomeOutlined, BookOutlined, BuildOutlined } from '@ant-design/icons-vue';
 import type { MenuProps, ItemType } from 'ant-design-vue';
 
 const authStore = useAuthStore();
@@ -67,11 +67,17 @@ const items: ItemType[] = reactive([
         getItem('Item 1', '/'),
         getItem('Item 2', '2'),
     ]),
+    // Đơn đặt hàng
+    getItem('Đơn đặt hàng', 'sub1', h(MailOutlined), [
+        getItem('Danh sách đơn hàng', '/orders'),
+        getItem('Đơn hàng chưa duyệt', '/orders/unapproved'),
+    ]),
 
     getItem('Tài khoản', 'sub2', h(UserOutlined),[
         getItem('Danh sách tài khoản', '/users'),
         getItem('Tài khoản chưa duyệt', '/users/unapproved'),
     ]),
+
 
     getItem('Sản phẩm', 'navigation-two', h(BookOutlined), [
         getItem('Tác giả', '/authors'),
@@ -80,6 +86,11 @@ const items: ItemType[] = reactive([
         getItem('Sách', 'sub3', null, [
             getItem('Danh sách', '/books'), getItem('Option 8', '8')
         ]),
+    ]),
+
+    getItem('Quản lý chương trình khuyến mãi', 'navigation-three', h(BuildOutlined),[
+        getItem('Danh sách', '/promotions'),
+        getItem('Tạo mới', '/promotions/create'),
     ]),
     
     getItem('Quản lý xuất nhập sách', '/book-transactions', h(AppstoreOutlined)),

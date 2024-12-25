@@ -67,7 +67,7 @@
 
                         <div class="flex gap-2 items-center">
                             <span class="">Sắp xếp theo: </span>
-                            <a-select v-model:value="query.filter.sort" style="width: 200px" placeholder="Sắp xếp">
+                            <a-select v-model:value="query.sort" style="width: 200px" placeholder="Sắp xếp">
                                 <a-select-option value="all">Sắp xếp</a-select-option>
                                 <a-select-option value="new">Sách mới nhất</a-select-option>
                                 <a-select-option value="old">Sách cũ nhất</a-select-option>
@@ -130,8 +130,8 @@ const query = reactive({
     search: {
         title: '',
     },
+    sort: 'new',
     filter: {
-        sort: 'new',
         is_sale: 'all',
     }
 });
@@ -207,11 +207,13 @@ const handleRefresh = () => {
     query.page = 1;
     search.value = '';
     query.search.title = '';
-    query.filter.sort = 'new';
+    query.sort = 'new';
     query.filter.is_sale = 'all';
     refreshBooks();
 }
 
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

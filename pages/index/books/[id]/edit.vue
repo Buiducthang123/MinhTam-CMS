@@ -232,8 +232,8 @@ const rules: Record<string, Rule[]> = {
     publisher_id: [{ required: true, message: 'Vui lòng chọn nhà xuất bản', trigger: 'change' }],
     price: [
         { required: true, message: 'Vui lòng nhập giá', trigger: 'blur' },
-        { min: 0, message: '% Giá phải lớn hơn 0', trigger: 'blur' },
-        { max: 100, message: '% Giá phải nhỏ hơn 100', trigger: 'blur' }
+        // { min: 0, message: 'Giá phải lớn hơn 0', trigger: 'blur' },
+        // { max: 100, message: '% Giá phải nhỏ hơn 100', trigger: 'blur' }
     ],
     discount: [{ required: true, message: 'Vui lòng nhập giảm giá', trigger: 'blur' }],
     pages: [{ required: true, message: 'Vui lòng nhập số trang', trigger: 'blur' }],
