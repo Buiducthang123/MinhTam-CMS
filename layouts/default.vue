@@ -35,7 +35,7 @@
 <script setup lang="ts">
 import { reactive, ref, watch, onMounted, h } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { MailOutlined, AppstoreOutlined, SettingOutlined, UserOutlined, HomeOutlined, BookOutlined, BuildOutlined } from '@ant-design/icons-vue';
+import { MailOutlined, AppstoreOutlined, SettingOutlined, UserOutlined, HomeOutlined, BookOutlined, BuildOutlined, RiseOutlined } from '@ant-design/icons-vue';
 import type { MenuProps, ItemType } from 'ant-design-vue';
 
 const authStore = useAuthStore();
@@ -94,6 +94,8 @@ const items: ItemType[] = reactive([
     ]),
     
     getItem('Quản lý xuất nhập sách', '/book-transactions', h(AppstoreOutlined)),
+
+    getItem('Quản lý chiết khấu bán buôn', '/discount-tiers', h(RiseOutlined)),
 
     { type: 'divider' },
 

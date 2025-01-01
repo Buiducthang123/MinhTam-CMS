@@ -108,7 +108,7 @@
                             <span>{{ formatCurrency(record.price) }}</span>
                         </template>
                         <template v-if="column.key === 'total'">
-                            <span>{{ formatCurrency(record.price * (100 - record.discount_amount) / 100) }}</span>
+                            <span>{{ formatCurrency(record.price * (100 - record.discount) / 100) }}</span>
                         </template>
 
                         <template v-if="column.key === 'action'">

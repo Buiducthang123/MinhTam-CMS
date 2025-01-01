@@ -187,7 +187,7 @@ const handleCancel = async (id:number) => {
         onResponse: ({response}) => {
             if(response.ok) {
                 message.success('Cập nhật trạng thái đơn hàng thành công');
-                refreshOrders()
+                handleRefresh();
             }
             else {
                 message.error('Cập nhật trạng thái đơn hàng thất bại');

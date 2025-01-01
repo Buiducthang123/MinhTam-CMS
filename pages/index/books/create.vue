@@ -240,8 +240,11 @@ const handleCreate = async () => {
       if (response.ok) {
         message.success('Thêm mới sách thành công');
         router.push('/books');
+
       }
-      message.error(response._data.message || 'Có lỗi xảy ra vui lòng thử lại');
+      else{
+        message.error(response._data.message || 'Có lỗi xảy ra vui lòng thử lại');
+      }
     }
   });
 };

@@ -2,6 +2,12 @@ import type { IAuthor } from "./author";
 import type { ICategory } from "./category";
 import type { IPublisher } from "./publisher";
 
+export interface IDiscountTier {
+    id: number;
+    book_id: number;
+    minimum_quantity: number;
+}
+
 export interface IBook {
     id: number;
     category_id: number;
@@ -16,7 +22,7 @@ export interface IBook {
     description: string;
     is_sale: number;
     price: number;
-    discount: string;
+    discount: number;
     pages: number;
     weight: number;
     height: number;
@@ -27,6 +33,7 @@ export interface IBook {
     updated_at: string;
     quantity?: number;
     authors?: IAuthor[];
+    discount_tiers?: IDiscountTier[];
     publisher?: IPublisher;
     category?: ICategory;
 }
