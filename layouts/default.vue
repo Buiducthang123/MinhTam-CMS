@@ -95,7 +95,7 @@ const items: ItemType[] = reactive([
     
     getItem('Quản lý xuất nhập sách', '/book-transactions', h(AppstoreOutlined)),
 
-    getItem('Quản lý chiết khấu bán buôn', '/discount-tiers', h(RiseOutlined)),
+    getItem('Quản lý thanh toán', '/payments', h(RiseOutlined)),
 
     { type: 'divider' },
 
