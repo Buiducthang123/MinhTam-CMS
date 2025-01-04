@@ -122,7 +122,7 @@
 
             <div class="mt-6">
                 <h6 class="text-lg font-medium">Duyệt đơn hàng: </h6>
-                <div class="flex gap-4 items-center">
+                <div class="flex gap-4 items-center" v-if="(order.status != OrderStatus.CANCELLED && order.payment_method == EPaymentMethod.BANK_TRANSFER) || order.payment_method == EPaymentMethod.COD">
                     <a-select size="large" class="mt-4" v-model:value="formUpdateOrder.status" style="width: 200px">
                         <a-select-option v-for="(item, key) in OrderStatusText" :key="key"
                             :value="Number.parseInt(key.toString())">
@@ -136,7 +136,9 @@
                         <a-button type="primary" class="mt-4" @click="">Xác nhận lưu</a-button>
                     </a-popconfirm>
                 </div>
-
+                <div v-else>
+                    <span class="text-red-500">Đơn hàng đã được hoàn tiền, không thể cập nhật trạng thái</span>
+                </div>
                 <!--
                     <a-steps :current="formUpdateOrder.status" :items="stepItem" class="mt-6"></a-steps>
                 -->
@@ -155,6 +157,7 @@
 <script setup lang="ts">
 import dayjs from 'dayjs';
 import { OrderStatus, OrderStatusText } from '~/enums/orderStatus.enum';
+import { EPaymentMethod } from '~/enums/payment-method.enum';
 import type { IOder } from '~/interfaces/order';
 
 const route = useRoute();

@@ -64,13 +64,13 @@ function getItem(
 
 const items: ItemType[] = reactive([
     getItem('Trang chủ', '/', h(HomeOutlined), [
-        getItem('Item 1', '/'),
-        getItem('Item 2', '2'),
+        getItem('Thống kê', '/'),
+        // getItem('Item 2', '2'),
     ]),
     // Đơn đặt hàng
     getItem('Đơn đặt hàng', 'sub1', h(MailOutlined), [
         getItem('Danh sách đơn hàng', '/orders'),
-        getItem('Đơn hàng chưa duyệt', '/orders/unapproved'),
+        getItem('Đơn hàng yêu cầu hủy', '/orders/cancel-request'),
     ]),
 
     getItem('Tài khoản', 'sub2', h(UserOutlined),[
@@ -99,12 +99,7 @@ const items: ItemType[] = reactive([
 
     { type: 'divider' },
 
-    getItem('Navigation Three', 'navigation-three', h(SettingOutlined), [
-        getItem('Option 9', '9'),
-        getItem('Option 10', '10'),
-        getItem('Option 11', '11'),
-        getItem('Option 12', '12'),
-    ]),
+    getItem('Quản lý đánh giá', '/reviews', h(SettingOutlined)),
 
     getItem('Group', 'group', null, [getItem('Option 13', '13'), getItem('Option 14', '14')], 'group'),
 ]);

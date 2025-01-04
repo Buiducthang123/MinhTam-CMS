@@ -6,6 +6,7 @@ export enum OrderStatus {
     DELIVERED = 5, // Đã giao hàng
     CANCELLED = 6, // Đã hủy
     NOT_PAID = 7, // Chưa chuyển khoản
+    REQUEST_CANCEL = 8, // Yêu cầu hủy
 }
 
 export const OrderStatusText:Record<OrderStatus,string> = {
@@ -16,4 +17,5 @@ export const OrderStatusText:Record<OrderStatus,string> = {
     [OrderStatus.DELIVERED]: 'Đã giao hàng',
     [OrderStatus.CANCELLED]: 'Đã hủy',
     [OrderStatus.NOT_PAID]: 'Chưa chuyển khoản',
+    [OrderStatus.REQUEST_CANCEL]: 'Yêu cầu hủy',
 };
