@@ -2,6 +2,7 @@
     <div class="px-6 py-10">
         <h3 class="font-bold text-xl mb-6">Quản lý danh mục</h3>
         <a-table :columns="columns" :data-source="data ? data?.data : []" :loading="loading" bordered
+            :pagination="false"
             :row-key="record => record.id">
             <template #bodyCell="{ column, record }">
                 <template v-if="column.dataIndex === 'avatar'">
@@ -58,6 +59,13 @@
                     </div>
                 </div>
             </template>
+
+            <template #footer>
+                <div class="flex justify-end">
+                    <a-pagination v-model:current="query.page" :total="data?.total" :pageSize="data?.per_page"
+                    />
+                </div>
+            </template>
         </a-table>
     </div>
 </template>
@@ -105,6 +113,7 @@ const columns = [
 ];
 
 const query = reactive({
+    page: 1,
     paginate: 10,
     filter: {
         level: 'all',

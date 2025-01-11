@@ -9,8 +9,8 @@
         <h3 class="font-bold text-xl mb-6">Chi tiết đơn hàng</h3>
 
         <template v-if="order">
-            <div class="flex">
-                <div class="space-y-2 w-1/2">
+            <div class="flex gap-20">
+                <div class="space-y-2 max-w-1/2 ">
                     <h6 class="text-lg font-medium mb-4">Thông tin người đặt hàng: </h6>
                     <p>
                         <span class="font-medium">Người đặt hàng: </span>
@@ -27,7 +27,7 @@
                     </div>
                 </div>
 
-                <div class="space-y-2 w-1/2">
+                <div class="space-y-2 max-w-1/2">
                     <h6 class="text-lg font-medium mb-4">Địa chỉ đặt hàng:</h6>
                     <p>
                         <span class="font-medium">Tên người nhận: </span>
@@ -53,8 +53,8 @@
 
             <div class="">
                 <h6 class="font-bold text-xl my-6">Thông tin chi tiết đơn hàng</h6>
-                <div class="flex gap-10">
-                    <div class="w-1/2">
+                <div class="flex gap-20">
+                    <div class="max-w-1/2">
                         <p>
                             <span class="font-medium">Mã đơn hàng:</span>
                             <span>{{ order.id }}</span>
@@ -124,7 +124,7 @@
                 <h6 class="text-lg font-medium">Duyệt đơn hàng: </h6>
                 <div class="flex gap-4 items-center" v-if="(order.status != OrderStatus.CANCELLED && order.payment_method == EPaymentMethod.BANK_TRANSFER) || order.payment_method == EPaymentMethod.COD">
                     <a-select size="large" class="mt-4" v-model:value="formUpdateOrder.status" style="width: 200px">
-                        <a-select-option v-for="(item, key) in OrderStatusText" :key="key"
+                        <a-select-option v-for="(item, key) in OrderStatusTextV2" :key="key"
                             :value="Number.parseInt(key.toString())">
                             {{ item }}
                         </a-select-option>
@@ -156,7 +156,7 @@
 
 <script setup lang="ts">
 import dayjs from 'dayjs';
-import { OrderStatus, OrderStatusText } from '~/enums/orderStatus.enum';
+import { OrderStatus, OrderStatusText, OrderStatusTextV2 } from '~/enums/orderStatus.enum';
 import { EPaymentMethod } from '~/enums/payment-method.enum';
 import type { IOder } from '~/interfaces/order';
 

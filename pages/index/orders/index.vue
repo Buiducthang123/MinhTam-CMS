@@ -6,7 +6,7 @@
         </div>
         <a-table :columns="columns" :dataSource="orders?.data ?? []" rowKey="id" bordered>
 
-            <template #title >
+            <template #title>
                 <div>
                     <a-button type="primary">Tạo đơn hàng</a-button>
                 </div>
@@ -38,11 +38,11 @@
                             <a-select-option v-for="(item, key) in OrderStatusText" :key="key" :value="key">
                                 {{ item }}
                             </a-select-option>
-                           
+
                         </a-select>
                     </div>
                 </div>
-              
+
             </template>
 
             <template #bodyCell="{ record, column }">
@@ -87,13 +87,19 @@
                     </a-tag>
                 </template>
 
+                <template v-if="column.key === 'payment_status'">
+                    <a-tag :color="(record.transaction_id && record.ref_id && record.payment_date) ? 'green' : 'red'">
+                        {{ (record.transaction_id && record.ref_id && record.payment_date) ? 'Đã thanh toán' : 'Chưa thanh toán' }}
+                    </a-tag>
+                </template>
+
                 <template v-if="column.key === 'payment_method'">
                     <span class="text-red-500">{{ EPaymentMethodText[record.payment_method as EPaymentMethod] }}</span>
                 </template>
 
                 <template v-if="column.key === 'action'">
                     <div class="flex gap-4 ">
-                        <a-button type="primary" @click="navigateTo('/orders/'+ record.id)">Xem chi tiết</a-button>
+                        <a-button type="primary" @click="navigateTo('/orders/' + record.id)">Xem chi tiết</a-button>
 
                         <a-popconfirm title="Bạn có chắc chắn muốn hủy đơn hàng này không?" ok-text="Có"
                             cancel-text="Không" @confirm="handleCancel(record.id)">
@@ -142,9 +148,14 @@ const columns = [
         key: 'payment_method',
     },
     {
-        title: 'Trạng thái',
+        title: 'Trạng thái đơn hàng',
         dataIndex: 'status',
         key: 'status',
+    },
+    {
+        title: 'Trạng thái thanh toán',
+        dataIndex: 'payment_status',
+        key: 'payment_status',
     },
     {
         title: 'Hành động',
@@ -157,7 +168,7 @@ const orderQuery = reactive({
     page: 1,
     paginate: 10,
     sort: 'old',
-    filter:{
+    filter: {
         status: '0'
     }
 });
@@ -174,7 +185,7 @@ const { data: orders, refresh: refreshOrders } = await useFetch<IResponsePaginat
     query: orderQuery,
 });
 
-const handleCancel = async (id:number) => {
+const handleCancel = async (id: number) => {
     await $fetch<IOder>(`/api/order/${id}`, {
         method: 'patch',
         headers: {
@@ -184,8 +195,8 @@ const handleCancel = async (id:number) => {
         body: {
             status: OrderStatus.CANCELLED
         },
-        onResponse: ({response}) => {
-            if(response.ok) {
+        onResponse: ({ response }) => {
+            if (response.ok) {
                 message.success('Cập nhật trạng thái đơn hàng thành công');
                 handleRefresh();
             }
