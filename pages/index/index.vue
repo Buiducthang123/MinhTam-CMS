@@ -16,27 +16,52 @@
 
             </div>
         </section>
-        <div class="flex gap-5 items-center my-10 border-y py-10">
-            <!--thống kê theo thời gian-->
-            <h6>
-                Thống kê theo thời gian :
-            </h6>
-            <a-select v-model:value="timeSelection" style="width: 300px" size="large">
-                <a-select-option v-for="item in timeOptions" :key="item.value" :value="item.value">{{ item.label
-                    }}</a-select-option>
-            </a-select>
-        </div>
-        <section>
-            <h6 class="mb-6 text-xl font-medium text-center">Biểu đồ thống kê</h6>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-                <div v-for="(chart, index) in charts" :key="index" class="chart-container">
-                    <canvas :id="chart.id"></canvas>
-                    <div class="text-center mt-4 text-xl font-medium">
-                        {{ chart.name ?? 'null' }}
+
+        <div>
+            <div class="flex gap-5 items-center my-10 border-y py-10">
+                <!--thống kê theo thời gian-->
+                <h6>
+                    Thống kê tổng quan :
+                </h6>
+                <a-select v-model:value="timeSelection" style="width: 300px" size="large">
+                    <a-select-option v-for="item in timeOptions" :key="item.value" :value="item.value">{{ item.label
+                        }}</a-select-option>
+                </a-select>
+            </div> 
+            <section>
+                <h6 class="mb-6 text-xl font-medium text-center">Biểu đồ thống kê</h6>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                    <div v-for="(chart, index) in charts" :key="index" class="chart-container">
+                        <canvas :id="chart.id"></canvas>
+                        <div class="text-center mt-4 text-xl font-medium">
+                            {{ chart.name ?? 'null' }}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
+
+        <div>
+            <div class="flex gap-5 items-center my-10 border-y py-10">
+                <!--thống kê theo thời gian-->
+                <h6>
+                    Thống kê theo ngày chỉ định :
+                </h6>
+              
+                <a-range-picker v-model:value="dateRangeSelect" @change="handleCheckChangeDateRange"/>
+            </div> 
+            <section>
+                <h6 class="mb-6 text-xl font-medium text-center">Biểu đồ thống kê</h6>
+                <div class="">
+                    <div v-for="(chart, index) in chartsV2" :key="index" class="chart-container">
+                        <canvas :id="chart.id"></canvas>
+                        <div class="text-center mt-4 text-xl font-medium">
+                            {{ chart.name ?? 'null' }}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
 
         <section class="mt-32">
             <div class="grid grid-cols-12 w-full gap-20">
@@ -65,9 +90,7 @@
                             </template>
                         </template>
                     </a-table>
-
                 </div>
-
             </div>
         </section>
     </div>
@@ -77,6 +100,12 @@
 import { ref, watch, onMounted, reactive, computed } from 'vue';
 import { Chart, registerables, type ChartType } from 'chart.js';
 import dayjs from 'dayjs';
+import type { Dayjs } from 'dayjs';
+type RangeValue = [Dayjs, Dayjs];
+
+const dateRangeSelect = ref<RangeValue>(
+    [dayjs().startOf('year'), dayjs().endOf('year')]
+);
 
 const authStore = useAuthStore();
 
@@ -95,7 +124,7 @@ const timeOptions = [
     { label: 'Tất cả', value: 'all' }
 ];
 
-const timeSelection = ref('all');
+const timeSelection = ref('this_year');
 
 const charts = ref([
     {
@@ -148,12 +177,50 @@ const charts = ref([
     }
 ]);
 
+const chartsV2 = ref([
+    {
+        id: 'chartV2_1',
+        type: 'bar',
+        name: 'Biểu đồ cột doanh thu',
+        data: {
+            labels: [],
+            datasets: [
+                {
+                    label: '# of Votes',
+                    data: [0, 0, 0, 0, 0, 0],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }
+            ]
+        }
+    },
+]);
+
 const chartInstances = ref<Chart[] | any>([]);
 
 const updateChartLabels = () => {
     const timeLabel = timeOptions.find(option => option.value === timeSelection.value)?.label || '';
     charts.value.forEach(chart => {
         chart.data.datasets[0].label = `# of Votes (${timeLabel})`;
+    });
+
+    chartsV2.value.forEach(chart => {
+        chart.data.datasets[0].label = `# of Votes (${statisticOrderQuery.dateTimeDetail.start} - ${statisticOrderQuery.dateTimeDetail.end})` ;
     });
 
     switch (timeSelection.value) {
@@ -212,6 +279,19 @@ const renderCharts = () => {
         });
         chartInstances.value.push(chartInstance);
     });
+
+    chartsV2.value.forEach(chart => {
+        const ctx = document.getElementById(chart.id) as HTMLCanvasElement;
+        const chartInstance = new Chart(ctx, {
+            type: chart.type as ChartType,
+            data: chart.data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+        chartInstances.value.push(chartInstance);
+    });
 };
 
 const updateChartData = (newData: any) => {
@@ -226,6 +306,20 @@ const updateChartData = (newData: any) => {
     }
 };
 
+//update chart2 
+const updateChartDataV2 = (newData: any) => {
+    const chart1 = chartsV2.value.find(chart => chart.id === 'chartV2_1');
+    if (chart1) {
+        chart1.data.labels = newData.labels;
+        chart1.data.datasets[0].data = newData.data;
+    }
+
+    // const chart2 = chartsV2.value.find(chart => chart.id === 'chartV2_2');
+    // if (chart2) {
+    //     chart2.data.labels = newData.labels;
+    //     chart2.data.datasets[0].data = newData.data;
+    // }
+};
 // const addData = (chart: Chart, label: string, newData: number) => {
 //     chart.data.labels.push(label);
 //     chart.data.datasets.forEach((dataset) => {
@@ -254,15 +348,22 @@ onMounted(async () => {
 });
 
 
-
 const statisticOrderQuery = reactive({
-    optionShow: timeSelection.value
+    optionShow: timeSelection.value,
+    dateTimeDetail : {
+        start: dateRangeSelect.value[0].format('YYYY-MM-DD'),
+        end: dateRangeSelect.value[1].format('YYYY-MM-DD')
+    }
 });
 
 const fetchDataAndUpdateCharts = async () => {
     let statisticOrder = await $fetch<{
         labels: string[];
-        data: any[];
+        dataChartV1: any[];
+        dataChartV2: {
+            labels: string[];
+            data: number[];
+        };
     }>('/api/statistics/revenue', {
         method: 'GET',
         headers: {
@@ -273,7 +374,8 @@ const fetchDataAndUpdateCharts = async () => {
     });
 
     if (statisticOrder) {
-        updateChartData(statisticOrder.data);
+        updateChartData(statisticOrder.dataChartV1);
+        updateChartDataV2(statisticOrder.dataChartV2);
         renderCharts();
     }
 };
@@ -357,6 +459,13 @@ const { data: statisticGeneral } = await useFetch<any>('/api/statistics', {
     },
     baseURL: useRuntimeConfig().public.baseURLAPI
 });
+
+const handleCheckChangeDateRange = async (value: [any, any]) => {
+    statisticOrderQuery.dateTimeDetail.start = value[0].format('YYYY-MM-DD');
+    statisticOrderQuery.dateTimeDetail.end = value[1].format('YYYY-MM-DD');
+
+    await fetchDataAndUpdateCharts();
+}
 
 </script>
 

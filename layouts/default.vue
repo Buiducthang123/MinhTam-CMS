@@ -84,7 +84,7 @@ const items: ItemType[] = reactive([
         getItem('Nhà xuất bản', '/publishers'),
         getItem('Danh mục', '/categories'),
         getItem('Sách', 'sub3', null, [
-            getItem('Danh sách', '/books'), getItem('Option 8', '8')
+            getItem('Danh sách', '/books'),
         ]),
     ]),
 
